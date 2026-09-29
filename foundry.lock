@@ -35,9 +35,6 @@
   "lib/osx-commons": {
     "rev": "7a6dc5839772e3b1de3c550fa2f405e11c6dd22b"
   },
-  "lib/staged-proposal-processor-plugin": {
-    "rev": "9457e52ee316565cac1bf754084f74c79eeba64b"
-  },
   "lib/token-voting-plugin": {
     "rev": "e97b783d76872d694f41dfc4bc846405019ca741"
   }

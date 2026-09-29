@@ -21,8 +21,6 @@ import {TokenVotingSetup} from "@aragon/token-voting-plugin/TokenVotingSetup.sol
 import {GovernanceERC20} from "@aragon/token-voting-plugin/erc20/GovernanceERC20.sol";
 import {GovernanceWrappedERC20} from "@aragon/token-voting-plugin/erc20/GovernanceWrappedERC20.sol";
 import {IERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
-import {StagedProposalProcessor as SPP} from "@aragon/staged-proposal-processor-plugin/StagedProposalProcessor.sol";
-import {StagedProposalProcessorSetup} from "@aragon/staged-proposal-processor-plugin/StagedProposalProcessorSetup.sol";
 
 import {LockToVotePluginSetup} from "@aragon/lock-to-vote-plugin/setup/LockToVotePluginSetup.sol";
 import {LockToVotePlugin} from "@aragon/lock-to-vote-plugin/LockToVotePlugin.sol";
@@ -82,7 +80,6 @@ contract DeployScript is Script {
     AdminSetup adminSetup;
     MultisigSetup multisigSetup;
     TokenVotingSetup tokenVotingSetup;
-    StagedProposalProcessorSetup stagedProposalProcessorSetup;
     LockToVotePluginSetup lockToVotePluginSetup;
 
     ConditionFactory conditionFactory;
@@ -114,7 +111,6 @@ contract DeployScript is Script {
         deployAdminSetup();
         deployMultisigSetup();
         deployTokenVotingSetup();
-        deployStagedProposalProcessorSetup();
         deployLockToVoteSetup();
 
         deployConditionFactory();
@@ -194,11 +190,6 @@ contract DeployScript is Script {
             new GovernanceWrappedERC20(IERC20Upgradeable(address(0)), "", "")
         );
         vm.label(address(tokenVotingSetup), "TokenVotingSetup");
-    }
-
-    function deployStagedProposalProcessorSetup() internal {
-        stagedProposalProcessorSetup = new StagedProposalProcessorSetup(new SPP());
-        vm.label(address(stagedProposalProcessorSetup), "StagedProposalProcessorSetup");
     }
 
     function deployLockToVoteSetup() internal {
@@ -319,18 +310,6 @@ contract DeployScript is Script {
                     ),
                     subdomain: vm.envOr("TOKEN_VOTING_PLUGIN_SUBDOMAIN", string("token-voting"))
                 }),
-                stagedProposalProcessorPlugin: ProtocolFactory.CorePlugin({
-                    pluginSetup: stagedProposalProcessorSetup,
-                    release: 1,
-                    build: 1,
-                    releaseMetadataUri: vm.envOr(
-                        "STAGED_PROPOSAL_PROCESSOR_PLUGIN_RELEASE_METADATA_URI", DEFAULT_SPP_RELEASE_METADATA
-                    ),
-                    buildMetadataUri: vm.envOr(
-                        "STAGED_PROPOSAL_PROCESSOR_PLUGIN_BUILD_METADATA_URI", DEFAULT_SPP_BUILD_METADATA
-                    ),
-                    subdomain: vm.envOr("STAGED_PROPOSAL_PROCESSOR_PLUGIN_SUBDOMAIN", string("spp"))
-                }),
                 lockToVotePlugin: ProtocolFactory.CorePlugin({
                     pluginSetup: lockToVotePluginSetup,
                     release: 1,
@@ -389,7 +368,6 @@ contract DeployScript is Script {
         console.log("- Admin PluginRepo", deployment.adminPluginRepo);
         console.log("- Multisig PluginRepo", deployment.multisigPluginRepo);
         console.log("- TokenVoting PluginRepo", deployment.tokenVotingPluginRepo);
-        console.log("- SPP PluginRepo", deployment.stagedProposalProcessorPluginRepo);
         console.log("- LockToVote PluginRepo", deployment.lockToVotePluginRepo);
         console.log();
 
@@ -433,9 +411,6 @@ contract DeployScript is Script {
         corePluginsAddresses.serialize("adminPluginRepo", deployment.adminPluginRepo);
         corePluginsAddresses.serialize("multisigPluginRepo", deployment.multisigPluginRepo);
         corePluginsAddresses.serialize("tokenVotingPluginRepo", deployment.tokenVotingPluginRepo);
-        corePluginsAddresses.serialize(
-            "stagedProposalProcessorPluginRepo", deployment.stagedProposalProcessorPluginRepo
-        );
         corePluginsAddresses = corePluginsAddresses.serialize("lockToVotePluginRepo", deployment.lockToVotePluginRepo);
 
         // Store the stringified JSON to the variable, as we won't need the key any longer

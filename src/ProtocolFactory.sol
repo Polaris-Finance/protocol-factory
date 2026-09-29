@@ -87,7 +87,6 @@ contract ProtocolFactory {
         CorePlugin adminPlugin;
         CorePlugin multisigPlugin;
         CorePlugin tokenVotingPlugin;
-        CorePlugin stagedProposalProcessorPlugin;
         CorePlugin lockToVotePlugin;
     }
 
@@ -120,7 +119,6 @@ contract ProtocolFactory {
         address adminPluginRepo;
         address multisigPluginRepo;
         address tokenVotingPluginRepo;
-        address stagedProposalProcessorPluginRepo;
         address lockToVotePluginRepo;
     }
 
@@ -435,8 +433,6 @@ contract ProtocolFactory {
         deployment.adminPluginRepo = preparePluginRepo(parameters.corePlugins.adminPlugin);
         deployment.multisigPluginRepo = preparePluginRepo(parameters.corePlugins.multisigPlugin);
         deployment.tokenVotingPluginRepo = preparePluginRepo(parameters.corePlugins.tokenVotingPlugin);
-        deployment.stagedProposalProcessorPluginRepo =
-            preparePluginRepo(parameters.corePlugins.stagedProposalProcessorPlugin);
         deployment.lockToVotePluginRepo = preparePluginRepo(parameters.corePlugins.lockToVotePlugin);
     }
 
