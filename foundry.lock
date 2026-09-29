@@ -1,0 +1,32 @@
+{
+  "lib/admin-plugin": {
+    "rev": "7b54f175fe8353fe5a7c9e1de65e588bdafdfe4a"
+  },
+  "lib/buffer": {
+    "rev": "82cc81935de1d1a82e021cf1030d902c5248982b"
+  },
+  "lib/ens-contracts": {
+    "rev": "2736f15fb36345f0691deb77cba4d77760b15077"
+  },
+  "lib/forge-std": {
+    "rev": "3b20d60d14b343ee4f908cb8079495c07f5e8981"
+  },
+  "lib/multisig-plugin": {
+    "rev": "391a1b1b9c5d4ee2180c370fdec4045d9189f202"
+  },
+  "lib/openzeppelin-contracts": {
+    "rev": "dc44c9f1a4c3b10af99492eed84f83ed244203f6"
+  },
+  "lib/openzeppelin-contracts-upgradeable": {
+    "rev": "2d081f24cac1a867f6f73d512f2022e1fa987854"
+  },
+  "lib/osx": {
+    "rev": "6f35a85f6159ae62c68776c5cff57d4e8cfe1549"
+  },
+  "lib/osx-commons": {
+    "rev": "98c2b9672d07377e4b429595d21c1803c19581db"
+  },
+  "lib/token-voting-plugin": {
+    "rev": "f9c66e2b427ea0044eefe0992c8d0f7f863d681a"
+  }
+}

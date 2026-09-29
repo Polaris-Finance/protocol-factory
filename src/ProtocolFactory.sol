@@ -87,7 +87,6 @@ contract ProtocolFactory {
         CorePlugin adminPlugin;
         CorePlugin multisigPlugin;
         CorePlugin tokenVotingPlugin;
-        CorePlugin stagedProposalProcessorPlugin;
     }
 
     /// @notice A struct with the voting settings and metadata of the Management DAO
@@ -119,7 +118,6 @@ contract ProtocolFactory {
         address adminPluginRepo;
         address multisigPluginRepo;
         address tokenVotingPluginRepo;
-        address stagedProposalProcessorPluginRepo;
     }
 
     /// @notice Emitted when deployOnce() has been called and the deployment is complete.
@@ -372,8 +370,6 @@ contract ProtocolFactory {
         deployment.adminPluginRepo = preparePluginRepo(parameters.corePlugins.adminPlugin);
         deployment.multisigPluginRepo = preparePluginRepo(parameters.corePlugins.multisigPlugin);
         deployment.tokenVotingPluginRepo = preparePluginRepo(parameters.corePlugins.tokenVotingPlugin);
-        deployment.stagedProposalProcessorPluginRepo =
-            preparePluginRepo(parameters.corePlugins.stagedProposalProcessorPlugin);
     }
 
     function preparePluginRepo(CorePlugin memory corePlugin) internal returns (address pluginRepo) {

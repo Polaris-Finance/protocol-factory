@@ -31,7 +31,6 @@ import {TokenVotingSetup} from "@aragon/token-voting-plugin/TokenVotingSetup.sol
 import {GovernanceERC20} from "@aragon/token-voting-plugin/erc20/GovernanceERC20.sol";
 import {GovernanceWrappedERC20} from "@aragon/token-voting-plugin/erc20/GovernanceWrappedERC20.sol";
 import {IERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
-import {StagedProposalProcessorSetup} from "@aragon/staged-proposal-processor-plugin/StagedProposalProcessorSetup.sol";
 
 import {ProtocolFactory} from "../src/ProtocolFactory.sol";
 import {DAOHelper} from "../src/helpers/DAOHelper.sol";
@@ -69,7 +68,6 @@ contract TestUpgradeScript is Script {
         PluginRepo adminRepo = PluginRepo(address(0x0));
         PluginRepo multisigRepo = PluginRepo(address(0x0));
         PluginRepo tokenVotingRepo = PluginRepo(address(0x0));
-        PluginRepo sppRepo = PluginRepo(address(0x0));
         DAORegistry daoRegistry = DAORegistry(address(0x0));
         PluginRepoRegistry pluginRepoRegistry = PluginRepoRegistry(address(0x0));
         PluginSetupProcessor pluginSetupProcessor = PluginSetupProcessor(address(0x0));
@@ -123,20 +121,6 @@ contract TestUpgradeScript is Script {
                 (
                     1, // target release
                     newTokenVotingSetup,
-                    bytes("ipfs://new-build"),
-                    bytes("ipfs://new-release")
-                )
-            )
-        });
-        address newSppSetup = address(new StagedProposalProcessorSetup());
-        actions[3] = Action({
-            to: address(sppRepo),
-            value: 0,
-            data: abi.encodeCall(
-                PluginRepo.createVersion,
-                (
-                    1, // target release
-                    newSppSetup,
                     bytes("ipfs://new-build"),
                     bytes("ipfs://new-release")
                 )
@@ -251,7 +235,6 @@ contract TestUpgradeScript is Script {
         console.log("- New Admin Setup", address(newAdminSetup));
         console.log("- New Multisig Setup", address(newMultisigSetup));
         console.log("- New TokenVoting Setup", address(newTokenVotingSetup));
-        console.log("- New SPP Setup", address(newSppSetup));
         console.log();
     }
 }

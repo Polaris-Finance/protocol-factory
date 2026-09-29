@@ -23,7 +23,6 @@ import {TokenVotingSetup} from "@aragon/token-voting-plugin/TokenVotingSetup.sol
 import {GovernanceERC20} from "@aragon/token-voting-plugin/erc20/GovernanceERC20.sol";
 import {GovernanceWrappedERC20} from "@aragon/token-voting-plugin/erc20/GovernanceWrappedERC20.sol";
 import {IERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
-import {StagedProposalProcessorSetup} from "@aragon/staged-proposal-processor-plugin/StagedProposalProcessorSetup.sol";
 
 import {ALICE_ADDRESS, RANDOM_ADDRESS} from "../constants.sol";
 
@@ -51,7 +50,6 @@ contract ProtocolFactoryBuilder is Test {
         ),
         new GovernanceWrappedERC20(IERC20Upgradeable(address(0)), "", "")
     );
-    StagedProposalProcessorSetup SPP_SETUP = new StagedProposalProcessorSetup();
 
     string daoRootDomain = "dao-test";
     string managementDaoSubdomain = "management-test";
@@ -80,14 +78,6 @@ contract ProtocolFactoryBuilder is Test {
         releaseMetadataUri: "token-voting-release-metadata",
         buildMetadataUri: "token-voting-build-metadata",
         subdomain: "token-voting-test"
-    });
-    ProtocolFactory.CorePlugin stagedProposalProcessorPlugin = ProtocolFactory.CorePlugin({
-        pluginSetup: SPP_SETUP,
-        release: 1,
-        build: 1,
-        releaseMetadataUri: "spp-release-metadata",
-        buildMetadataUri: "spp-build-metadata",
-        subdomain: "spp-test"
     });
 
     ProtocolFactory.ManagementDaoParameters managementDaoParams = ProtocolFactory.ManagementDaoParameters({
@@ -172,24 +162,6 @@ contract ProtocolFactoryBuilder is Test {
         return this;
     }
 
-    function withStagedProposalProcessorPlugin(
-        uint8 _release,
-        uint8 _build,
-        string memory _releaseMetadataUri,
-        string memory _buildMetadataUri,
-        string memory _subdomain
-    ) public returns (ProtocolFactoryBuilder) {
-        stagedProposalProcessorPlugin = ProtocolFactory.CorePlugin({
-            pluginSetup: SPP_SETUP,
-            release: _release,
-            build: _build,
-            releaseMetadataUri: _releaseMetadataUri,
-            buildMetadataUri: _buildMetadataUri,
-            subdomain: _subdomain
-        });
-        return this;
-    }
-
     function withManagementDaoMetadataUri(string memory _metadataUri) public returns (ProtocolFactoryBuilder) {
         managementDaoParams.metadataUri = _metadataUri;
         return this;
@@ -232,7 +204,6 @@ contract ProtocolFactoryBuilder is Test {
         vm.label(address(params.corePlugins.adminPlugin.pluginSetup), "AdminSetup");
         vm.label(address(params.corePlugins.multisigPlugin.pluginSetup), "MultisigSetup");
         vm.label(address(params.corePlugins.tokenVotingPlugin.pluginSetup), "TokenVotingSetup");
-        vm.label(address(params.corePlugins.stagedProposalProcessorPlugin.pluginSetup), "StagedProposalProcessorSetup");
 
         vm.roll(block.number + 1);
         vm.warp(block.timestamp + 1);
@@ -294,14 +265,6 @@ contract ProtocolFactoryBuilder is Test {
                     releaseMetadataUri: tokenVotingPlugin.releaseMetadataUri,
                     buildMetadataUri: tokenVotingPlugin.buildMetadataUri,
                     subdomain: tokenVotingPlugin.subdomain
-                }),
-                stagedProposalProcessorPlugin: ProtocolFactory.CorePlugin({
-                    pluginSetup: SPP_SETUP,
-                    release: stagedProposalProcessorPlugin.release,
-                    build: stagedProposalProcessorPlugin.build,
-                    releaseMetadataUri: stagedProposalProcessorPlugin.releaseMetadataUri,
-                    buildMetadataUri: stagedProposalProcessorPlugin.buildMetadataUri,
-                    subdomain: stagedProposalProcessorPlugin.subdomain
                 })
             }),
             managementDao: ProtocolFactory.ManagementDaoParameters({

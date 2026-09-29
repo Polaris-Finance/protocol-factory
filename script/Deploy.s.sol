@@ -20,7 +20,6 @@ import {TokenVotingSetup} from "@aragon/token-voting-plugin/TokenVotingSetup.sol
 import {GovernanceERC20} from "@aragon/token-voting-plugin/erc20/GovernanceERC20.sol";
 import {GovernanceWrappedERC20} from "@aragon/token-voting-plugin/erc20/GovernanceWrappedERC20.sol";
 import {IERC20Upgradeable} from "@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol";
-import {StagedProposalProcessorSetup} from "@aragon/staged-proposal-processor-plugin/StagedProposalProcessorSetup.sol";
 
 import {ProtocolFactory} from "../src/ProtocolFactory.sol";
 import {DAOHelper} from "../src/helpers/DAOHelper.sol";
@@ -63,7 +62,6 @@ contract DeployScript is Script {
     AdminSetup adminSetup;
     MultisigSetup multisigSetup;
     TokenVotingSetup tokenVotingSetup;
-    StagedProposalProcessorSetup stagedProposalProcessorSetup;
 
     ProtocolFactory factory;
     DAOHelper daoHelper;
@@ -92,7 +90,6 @@ contract DeployScript is Script {
         deployAdminSetup();
         deployMultisigSetup();
         deployTokenVotingSetup();
-        deployStagedProposalProcessorSetup();
 
         // Deploy the factory with immutable parameters and trigger the protocol deployment
 
@@ -168,11 +165,6 @@ contract DeployScript is Script {
         vm.label(address(tokenVotingSetup), "TokenVotingSetup");
     }
 
-    function deployStagedProposalProcessorSetup() internal {
-        stagedProposalProcessorSetup = new StagedProposalProcessorSetup();
-        vm.label(address(stagedProposalProcessorSetup), "StagedProposalProcessorSetup");
-    }
-
     function readManagementDaoMembers() public view returns (address[] memory result) {
         // JSON list of members
         string memory membersFileName =
@@ -237,16 +229,6 @@ contract DeployScript is Script {
                     releaseMetadataUri: vm.envOr("TOKEN_VOTING_PLUGIN_RELEASE_METADATA_URI", DEFAULT_TOKEN_VOTING_RELEASE_METADATA),
                     buildMetadataUri: vm.envOr("TOKEN_VOTING_PLUGIN_BUILD_METADATA_URI", DEFAULT_TOKEN_VOTING_BUILD_METADATA),
                     subdomain: vm.envOr("TOKEN_VOTING_PLUGIN_SUBDOMAIN", string("token-voting"))
-                }),
-                stagedProposalProcessorPlugin: ProtocolFactory.CorePlugin({
-                    pluginSetup: stagedProposalProcessorSetup,
-                    release: 1,
-                    build: 1,
-                    releaseMetadataUri: vm.envOr(
-                        "STAGED_PROPOSAL_PROCESSOR_PLUGIN_RELEASE_METADATA_URI", DEFAULT_SPP_RELEASE_METADATA
-                    ),
-                    buildMetadataUri: vm.envOr("STAGED_PROPOSAL_PROCESSOR_PLUGIN_BUILD_METADATA_URI", DEFAULT_SPP_BUILD_METADATA),
-                    subdomain: vm.envOr("STAGED_PROPOSAL_PROCESSOR_PLUGIN_SUBDOMAIN", string("spp"))
                 })
             }),
             managementDao: ProtocolFactory.ManagementDaoParameters({
@@ -296,7 +278,6 @@ contract DeployScript is Script {
         console.log("- Admin PluginRepo", deployment.adminPluginRepo);
         console.log("- Multisig PluginRepo", deployment.multisigPluginRepo);
         console.log("- TokenVoting PluginRepo", deployment.tokenVotingPluginRepo);
-        console.log("- SPP PluginRepo", deployment.stagedProposalProcessorPluginRepo);
         console.log();
 
         console.log("Other OSx contracts:");
@@ -335,9 +316,6 @@ contract DeployScript is Script {
         corePluginsAddresses.serialize("adminPluginRepo", deployment.adminPluginRepo);
         corePluginsAddresses.serialize("multisigPluginRepo", deployment.multisigPluginRepo);
         corePluginsAddresses.serialize("tokenVotingPluginRepo", deployment.tokenVotingPluginRepo);
-        corePluginsAddresses = corePluginsAddresses.serialize(
-            "stagedProposalProcessorPluginRepo", deployment.stagedProposalProcessorPluginRepo
-        );
 
         // Store the stringified JSON to the variable, as we won't need the key any longer
         string memory version = "versionObject";

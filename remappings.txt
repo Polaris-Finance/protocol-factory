@@ -6,7 +6,6 @@
 @aragon/admin-plugin/=lib/admin-plugin/packages/contracts/src/
 @aragon/multisig-plugin/=lib/multisig-plugin/packages/contracts/src/
 @aragon/token-voting-plugin/=lib/token-voting-plugin/src/
-@aragon/staged-proposal-processor-plugin/=lib/staged-proposal-processor-plugin/src/
 
 @ensdomains/ens-contracts/=lib/ens-contracts/
 @ensdomains/buffer/=lib/buffer/
